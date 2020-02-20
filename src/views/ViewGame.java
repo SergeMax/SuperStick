@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import models.StickMan;
 
 public class ViewGame {
 
@@ -16,7 +17,10 @@ public class ViewGame {
     private Group root;
     private HBox boxBackground;
     private int compteurDefilement =0;
-    private Timeline timelineDefilement;
+    private Timeline timelineDefilementRight;
+    private Timeline timelineDefilementLeft;
+    private StickMan stickMan;
+    private ImageView imgStick;
 
 
     public ViewGame(Group root) {
@@ -25,12 +29,22 @@ public class ViewGame {
 
         this.root = root;
         initBackgroundHbox();
-
+        initStickMan();
+        initTotalRoot();
 
     }
 
     public void setEvent(ControllerGame controllerGame) {
 
+
+    }
+
+
+    public void initStickMan(){
+
+       stickMan = new StickMan("assets/gif/stickFatigue.gif");
+       // System.out.println(stickMan);
+       //imgStick = new ImageView("assets/gif/stickRun.gif");
 
     }
 
@@ -42,7 +56,14 @@ public class ViewGame {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         boxBackground.setBackground(new Background(myBI));
+
+    }
+
+    public void initTotalRoot(){
+        root.getChildren().clear();
         root.getChildren().add(boxBackground);
+        root.getChildren().add(stickMan);
+
 
     }
 
@@ -56,24 +77,29 @@ public class ViewGame {
         return boxBackground;
     }
 
-    public void defilement(int i) {
+    public void defilementRight(int i) {
         int compteurDefilementEnd = compteurDefilement - 1000;
-       // boxBackground.setTranslateX(compteurDefilement);
-        final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
-        //compteurDefilement = compteurDefilement-1000;
 
+        final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
         final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(4), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
 
-   //     final KeyFrame goLeftStartFace = new KeyFrame(Duration.ZERO, new KeyValue(vaissJ1Face.xProperty(), vaissJ1Face.getX()));
-     //   final KeyFrame goLeftEndFace = new KeyFrame(Duration.seconds(0.5), new KeyValue(vaissJ1Face.xProperty(), 800));
-
-        timelineDefilement = new Timeline(defillementStart, defillementEnd);
-        timelineDefilement.setCycleCount(1);
+        timelineDefilementRight = new Timeline(defillementStart, defillementEnd);
+        timelineDefilementRight.setCycleCount(1);
 
     }
 
-    public Timeline getTimelineDefilement() {
-        return timelineDefilement;
+    public void defilementLeft(int compteurDefilement) {
+        int compteurDefilementEnd = compteurDefilement + 1000;
+
+        final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
+        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(4), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
+
+        timelineDefilementLeft = new Timeline(defillementStart, defillementEnd);
+        timelineDefilementLeft.setCycleCount(1);
+    }
+
+    public Timeline getTimelineDefilementRight() {
+        return timelineDefilementRight;
     }
 
     public int getCompteurDefilement() {
@@ -83,5 +109,13 @@ public class ViewGame {
 
     public void setCompteurDefilement(int compteurDefilement) {
         this.compteurDefilement = compteurDefilement;
+    }
+
+    public Timeline getTimelineDefilementLeft() {
+        return timelineDefilementLeft;
+    }
+
+    public StickMan getStickMan() {
+        return stickMan;
     }
 }
