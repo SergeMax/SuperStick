@@ -6,15 +6,16 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import models.StickMan;
 
-public class anim {
+public class Anim {
 
-    private Timeline timelineJump;
-    private Timeline timelineJumpBackToGround;
+    private Timeline timelineJump = new Timeline();
+    private Timeline timelineJumpBackToGround = new Timeline();
 
     public void animJump(StickMan stickMan){
 
-        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
-        final KeyFrame JumpMiddle = new KeyFrame(Duration.seconds(1), new KeyValue(stickMan.translateYProperty(), -200 ));
+        int stickManY = stickMan.translateYProperty().intValue();
+        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), stickManY));
+        final KeyFrame JumpMiddle = new KeyFrame(Duration.seconds(1), new KeyValue(stickMan.translateYProperty(), stickManY-200 ));
         final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(2), new KeyValue(stickMan.translateYProperty(), 0 ));
 
         timelineJump = new Timeline(JumpStart, JumpMiddle, JumpEnd);

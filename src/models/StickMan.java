@@ -1,12 +1,14 @@
 package models;
 
 
-import anim.anim;
+import anim.Anim;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class StickMan extends ImageView{
 
+
+    private Anim ani = new Anim();
 
     public StickMan(String url) {
 
@@ -24,9 +26,13 @@ public class StickMan extends ImageView{
 
     }
 
-    public void setStickManRun(){
+    public void setStickManRunRight(){
        this.setImage(new Image("assets/gif/stickRun.gif"));
 
+    }
+
+    public void setStickManRunLeft() {
+        this.setImage(new Image("assets/gif/stickRunrLeft.gif"));
     }
 
     public void setStickManFatigue(){
@@ -35,17 +41,31 @@ public class StickMan extends ImageView{
     }
 
     public void setStickManJump(){
-        anim ani = new anim();
-        //ani.getTimelineJumpBackToGround().stop();
+        ani.getTimelineJumpBackToGround().stop();
         this.setImage(new Image("assets/gif/stickJump.gif"));
         ani.animJump(this);
     }
 
+    public void setStickManJumpLeft(){
+        ani.getTimelineJumpBackToGround().stop();
+        this.setImage(new Image("assets/gif/stickJumpLeft.gif"));
+        ani.animJump(this);
+    }
+
     public void setStickManJumpDown(){
-        anim ani = new anim();
-        //ani.getTimelineJump().stop();
-        this.setImage(new Image("assets/gif/stickFatigue.gif"));
+        ani.getTimelineJump().stop();
+        this.setImage(new Image("assets/gif/stickJumpDownRight.gif"));
         ani.animJumpBakcToGround(this);
 
+    }
+    public void setStickManJumpDownLeft(){
+        ani.getTimelineJump().stop();
+        this.setImage(new Image("assets/gif/stickJumpDownLeft.gif"));
+        ani.animJumpBakcToGround(this);
+
+    }
+
+    public Anim getAni() {
+        return ani;
     }
 }
