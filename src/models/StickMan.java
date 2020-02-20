@@ -13,7 +13,7 @@ public class StickMan extends ImageView{
     public StickMan(String url) {
 
         this.setImage(new Image(url));
-        this.setFitWidth(100);
+        this.setFitWidth(150);
         this.setPreserveRatio(true);
         this.setX(100);
         this.setY(600);

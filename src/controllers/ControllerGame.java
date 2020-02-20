@@ -30,13 +30,14 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
 
-        Anim anim = new Anim();
+       // Anim anim = new Anim();
         if (keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED)) {
 
             if (keyEvent.getCode() == KeyCode.RIGHT) {
 
                 if (rightpressed == false) {
                     rightpressed = true;
+                    leftpressed = false;
                     viewGame.getStickMan().setStickManRunRight();
 
                     viewHandler.getViewGame().setCompteurDefilement(viewHandler.getViewGame().getCompteurDefilement());
@@ -54,6 +55,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 if (leftpressed == false) {
                     leftpressed = true;
+                    rightpressed = false;
                     viewGame.getStickMan().setStickManRunLeft();
 
 
@@ -93,9 +95,14 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
             if (keyEvent.getCode() == KeyCode.RIGHT) {
                 viewHandler.getViewGame().getTimelineDefilementRight().stop();
+
+                if (leftpressed == true){
+                    viewGame.getStickMan().setStickManRunLeft();
+                }
+
                 if (spacePresse == true) {
                     combineSpaceAndRightOrLeft = true;
-                } else {
+                } else if (spacePresse == false){
                     viewGame.getStickMan().setStickManFatigue();
                     combineSpaceAndRightOrLeft = false;
                 }
@@ -106,9 +113,14 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
             if (keyEvent.getCode() == KeyCode.LEFT) {
                 viewHandler.getViewGame().getTimelineDefilementLeft().stop();
+
+                if (rightpressed == true){
+                    viewGame.getStickMan().setStickManRunRight();
+                }
+
                 if (spacePresse == true) {
                     combineSpaceAndRightOrLeft = true;
-                } else {
+                } else if (!spacePresse) {
                     viewGame.getStickMan().setStickManFatigue();
                     combineSpaceAndRightOrLeft = false;
                 }
