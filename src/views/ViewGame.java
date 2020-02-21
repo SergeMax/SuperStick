@@ -89,10 +89,10 @@ public class ViewGame {
     }
 
     public void defilementLeft(int compteurDefilement) {
-        int compteurDefilementEnd = compteurDefilement + 2000;
+        int compteurDefilementEnd = compteurDefilement + 8000;
 
         final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
-        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(8), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
+        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
 
         timelineDefilementLeft = new Timeline(defillementStart, defillementEnd);
         timelineDefilementLeft.setCycleCount(1);
