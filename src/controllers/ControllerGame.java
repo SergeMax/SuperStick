@@ -96,6 +96,10 @@ public class ControllerGame implements EventHandler<KeyEvent> {
             if (keyEvent.getCode() == KeyCode.RIGHT) {
                 viewHandler.getViewGame().getTimelineDefilementRight().stop();
 
+                if (spacePresse == true) {
+                    viewGame.getStickMan().setStickManJumpDown();
+                }
+
                 if (leftpressed == true){
                     viewGame.getStickMan().setStickManRunLeft();
                 }
@@ -113,6 +117,10 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
             if (keyEvent.getCode() == KeyCode.LEFT) {
                 viewHandler.getViewGame().getTimelineDefilementLeft().stop();
+
+                if (spacePresse == true) {
+                    viewGame.getStickMan().setStickManJumpDownLeft();
+                }
 
                 if (rightpressed == true){
                     viewGame.getStickMan().setStickManRunRight();
