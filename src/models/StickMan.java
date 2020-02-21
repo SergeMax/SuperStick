@@ -2,13 +2,17 @@ package models;
 
 
 import anim.Anim;
+import javafx.animation.PauseTransition;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class StickMan extends ImageView{
 
 
     private Anim ani = new Anim();
+    private PauseTransition delaySetStickManFall = new PauseTransition();
 
     public StickMan(String url) {
 
@@ -64,24 +68,67 @@ public class StickMan extends ImageView{
 
     public void setStickManJumpDown(){
         ani.getTimelineJump().stop();
-        this.setImage(new Image("assets/gif/stickJumpDownRight.gif"));
+        delaySetStickManFall = new PauseTransition(Duration.seconds(0.15));
+        delaySetStickManFall.setOnFinished(eventt -> {
+            this.setImage(new Image("assets/gif/stickJumpDownRight.gif"));
+        });
+        delaySetStickManFall.play();
+
         ani.animJumpBakcToGround(this);
         this.setFitWidth(150);
         this.setTranslateY(0);
-
     }
+
+    public void setStickManSimpleFall(){
+        this.setImage(new Image("assets/gif/stickJumpDownRight.gif"));
+        this.setFitWidth(150);
+        this.setTranslateY(0);
+    }
+
     public void setStickManJumpDownLeft(){
         ani.getTimelineJump().stop();
-        this.setImage(new Image("assets/gif/stickJumpDownLeft.gif"));
+        delaySetStickManFall = new PauseTransition(Duration.seconds(0.15));
+        delaySetStickManFall.setOnFinished(eventt -> {
+            this.setImage(new Image("assets/gif/stickJumpDownLeft.gif"));
+        });
+        delaySetStickManFall.play();
         ani.animJumpBakcToGround(this);
         this.setFitWidth(150);
         this.setTranslateY(0);
 
     }
 
-    public Anim getAni() {
-        return ani;
+
+
+    public void tirLaser(Group root, StickMan stickMan){
+        ImageView laserYeux = new ImageView("assets/image/laserYeux.png");
+        laserYeux.setFitWidth(100);
+
+        int stickManY = stickMan.yProperty().intValue()+20;
+        int stickManYAjustTranslate = stickMan.translateYProperty().intValue();
+
+        System.out.println(stickManY +" " + stickManYAjustTranslate);
+
+        laserYeux.setY(stickManY+stickManYAjustTranslate);
+
+        laserYeux.setPreserveRatio(true);
+
+        root.getChildren().add(laserYeux);
+
+        PauseTransition delaySpacePress = new PauseTransition(Duration.seconds(2)) ;
+        delaySpacePress.setOnFinished(eventt -> {
+
+            root.getChildren().remove(laserYeux);
+
+
+        });
+        delaySpacePress.play();
+
+        ani.animTirYeux(laserYeux, this);
+
+
     }
+
 
     public void setStickManBeat() {
         this.setImage(new Image("assets/gif/stickBeatRight.gif"));
@@ -100,4 +147,13 @@ public class StickMan extends ImageView{
         this.setTranslateY(-150);
 
     }
+
+    public PauseTransition getDelaySetStickManFall() {
+        return delaySetStickManFall;
+    }
+
+    public Anim getAni() {
+        return ani;
+    }
+
 }

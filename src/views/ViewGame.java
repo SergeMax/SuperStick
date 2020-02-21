@@ -118,4 +118,8 @@ public class ViewGame {
     public StickMan getStickMan() {
         return stickMan;
     }
+
+    public Group getRoot() {
+        return root;
+    }
 }

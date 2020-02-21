@@ -3,6 +3,7 @@ package anim;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import models.StickMan;
 
@@ -10,6 +11,7 @@ public class Anim {
 
     private Timeline timelineJump = new Timeline();
     private Timeline timelineJumpBackToGround = new Timeline();
+    private Timeline timelineTirYeux;
 
     public void animJump(StickMan stickMan){
 
@@ -32,6 +34,23 @@ public class Anim {
         timelineJumpBackToGround = new Timeline(JumpStart, JumpEnd);
         timelineJumpBackToGround.setCycleCount(1);
         timelineJumpBackToGround.play();
+    }
+
+    public void animTirYeux(ImageView laser, StickMan stickMan){
+        int stickManY = stickMan.yProperty().intValue();
+        int stickManYAjustTranslate = stickMan.yProperty().intValue();
+
+        int stickManX = stickMan.xProperty().intValue();
+
+        final KeyFrame laserStart = new KeyFrame(Duration.ZERO, new KeyValue(laser.translateXProperty(), stickManX+80));
+        final KeyFrame laserY = new KeyFrame(Duration.ZERO, new KeyValue(laser.translateYProperty(), stickManY - stickManYAjustTranslate));
+
+
+        final KeyFrame laserEnd = new KeyFrame(Duration.seconds(1), new KeyValue(laser.translateXProperty(), stickManX+2000 ));
+
+        timelineTirYeux = new Timeline(laserStart, laserY, laserEnd);
+        timelineTirYeux.setCycleCount(1);
+        timelineTirYeux.play();
     }
 
     public Timeline getTimelineJump() {
