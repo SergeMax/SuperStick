@@ -18,6 +18,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     private boolean leftpressedAndSPace = false;
     private PauseTransition delayRemoveJumpDown = new PauseTransition();
     private boolean combineSpaceAndRightOrLeft;
+    private boolean beatStart = false;
 
     public ControllerGame(ViewHandler viewHandler) {
         this.viewHandler = viewHandler;
@@ -30,7 +31,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
 
-       // Anim anim = new Anim();
+        // Anim anim = new Anim();
         if (keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED)) {
 
             if (keyEvent.getCode() == KeyCode.RIGHT) {
@@ -50,6 +51,9 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 }
             }
+
+
+
 
             if (keyEvent.getCode() == KeyCode.LEFT) {
 
@@ -88,8 +92,19 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                 }
             }
 
+            if (keyEvent.getCode() == KeyCode.N) {
+
+                if (beatStart == false) {
+                    viewGame.getStickMan().setStickManBeat();
+                    beatStart= true;
+                }
+
+            }
+
         }
-        if (keyEvent.getEventType().equals(KeyEvent.KEY_RELEASED)) {
+        if (keyEvent.getEventType().
+
+                equals(KeyEvent.KEY_RELEASED)) {
             delayRemoveJumpDown.stop();
 
 
@@ -100,13 +115,13 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                     viewGame.getStickMan().setStickManJumpDown();
                 }
 
-                if (leftpressed == true){
+                if (leftpressed == true) {
                     viewGame.getStickMan().setStickManRunLeft();
                 }
 
                 if (spacePresse == true) {
                     combineSpaceAndRightOrLeft = true;
-                } else if (spacePresse == false){
+                } else if (spacePresse == false) {
                     viewGame.getStickMan().setStickManFatigue();
                     combineSpaceAndRightOrLeft = false;
                 }
@@ -122,7 +137,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                     viewGame.getStickMan().setStickManJumpDownLeft();
                 }
 
-                if (rightpressed == true){
+                if (rightpressed == true) {
                     viewGame.getStickMan().setStickManRunRight();
                 }
 
@@ -188,6 +203,14 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                 combineSpaceAndRightOrLeft = false;
                 spacePresse = false;
                 leftpressedAndSPace = false;
+            }
+
+            if (keyEvent.getCode() == KeyCode.N) {
+
+
+                    beatStart= false;
+
+
             }
         }
 
