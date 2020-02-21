@@ -84,7 +84,7 @@ public class StickMan extends ImageView{
     }
 
     public void setStickManBeat() {
-        this.setImage(new Image("assets/gif/stickyBeatLoop.gif"));
+        this.setImage(new Image("assets/gif/stickBeatRight.gif"));
        this.setFitWidth(300);
 
      //   viewHandler.getViewGame().getCompteurDefilement()
@@ -93,7 +93,7 @@ public class StickMan extends ImageView{
     }
 
     public void setStickManBeatRun() {
-        this.setImage(new Image("assets/gif/stickBeatRun25fps.gif"));
+        this.setImage(new Image("assets/gif/stickBeatRunRight.gif"));
         this.setFitWidth(300);
 
         //   viewHandler.getViewGame().getCompteurDefilement()

@@ -41,14 +41,14 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 if (rightpressed == false) {
                     rightpressed = true;
-                    leftpressed = false;
+                   // leftpressed = false;
+                    viewGame.getTimelineDefilementLeft().stop();
+
                     viewGame.getStickMan().setStickManRunRight();
 
                     viewHandler.getViewGame().setCompteurDefilement(viewHandler.getViewGame().getCompteurDefilement());
-
                     System.out.println("keycode right");
                     viewGame.defilementRight(viewHandler.getViewGame().getCompteurDefilement());
-                    viewGame.getTimelineDefilementLeft().stop();
 
                     viewGame.getTimelineDefilementRight().playFromStart();
 
@@ -60,12 +60,13 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 if (leftpressed == false) {
                     leftpressed = true;
-                    rightpressed = false;
-                    viewGame.getStickMan().setStickManRunLeft();
+                  //  rightpressed = false;
 
 
                     viewHandler.getViewGame().setCompteurDefilement(viewHandler.getViewGame().getCompteurDefilement());
                     viewGame.getTimelineDefilementRight().stop();
+                    viewGame.getStickMan().setStickManRunLeft();
+
                     System.out.println("keycode Left");
                     viewHandler.getViewGame().defilementLeft(viewHandler.getViewGame().getCompteurDefilement());
                     viewHandler.getViewGame().getTimelineDefilementLeft().playFromStart();
@@ -99,8 +100,11 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
             if (keyEvent.getCode() == KeyCode.N) {
 
-                if (beatStart == false && spacePresse == false && rightpressed == false) {
+                if (beatStart == false && spacePresse == false && rightpressed == false && spacePresseforBeat == false) {
                     viewGame.getStickMan().setStickManBeat();
+                    beatStart = true;
+                }else if (beatStart == false && spacePresse == false && rightpressed == true && spacePresseforBeat == true) {
+                    viewGame.getStickMan().setStickManBeatRun();
                     beatStart = true;
                 }
 
@@ -132,9 +136,13 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 if (spacePresse == true) {
                     combineSpaceAndRightOrLeft = true;
-                } else if (spacePresse == false) {
+                } else if (spacePresse == false && leftpressed == false) {
                     viewGame.getStickMan().setStickManFatigue();
                     combineSpaceAndRightOrLeft = false;
+                }
+
+                if (beatStart==true && rightpressed== true){
+                    viewGame.getStickMan().setStickManBeat();
                 }
 
                 rightpressed = false;
@@ -154,7 +162,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 if (spacePresse == true) {
                     combineSpaceAndRightOrLeft = true;
-                } else if (!spacePresse) {
+                } else if (!spacePresse && leftpressed == false) {
                     viewGame.getStickMan().setStickManFatigue();
                     combineSpaceAndRightOrLeft = false;
                 }
@@ -236,8 +244,13 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                         viewGame.getStickMan().setStickManRunRight();
                     });
                     delaySetStickManRunRight.play();
+                }
+
+                if (rightpressed == false && spacePresse == false) {
+                        viewGame.getStickMan().setStickManFatigue();
 
                 }
+
                 beatStart = false;
             }
         }
