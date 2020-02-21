@@ -184,10 +184,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                     }
 
-
-
-
-
                 }
                 combineSpaceAndRightOrLeft = false;
                 spacePresse = false;
