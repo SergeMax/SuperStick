@@ -91,4 +91,13 @@ public class StickMan extends ImageView{
        this.setTranslateY(-150);
 
     }
+
+    public void setStickManBeatRun() {
+        this.setImage(new Image("assets/gif/stickBeatRun25fps.gif"));
+        this.setFitWidth(300);
+
+        //   viewHandler.getViewGame().getCompteurDefilement()
+        this.setTranslateY(-150);
+
+    }
 }
