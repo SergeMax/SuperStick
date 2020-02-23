@@ -61,10 +61,10 @@ public class ViewGame {
     }
 
     public void initDrone(){
-        drone1 = new Drone("assets/image/enemy/drone.png", 800, 200, 100);
+        drone1 = new Drone("assets/image/enemy/drone.png", 1700, 200, 100);
         anim.animDrone(drone1, 0, -300, 0, -100, -200, 0, 200, 0  );
 
-        drone2 = new Drone("assets/image/enemy/drone.png", 1700, 100, 80);
+        drone2 = new Drone("assets/image/enemy/drone.png", 2700, 100, 80);
         drone2.setRotate(30);
         drone2.setScaleX(-1);
         anim.animDrone(drone2, 0, 200, 300, 0, -50, 200, 500, 300  );
