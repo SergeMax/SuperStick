@@ -83,10 +83,11 @@ public class ViewGame {
     public void initLogo(){
         logo = new ImageView("assets/image/Super Stick.png");
         logo.setX(580);
-        logo.setY(30);
+        logo.setY(40);
         logo.setOpacity(0.55);
         logo.setFitWidth(300);
         logo.setPreserveRatio(true);
+
     }
 
     public void initBackgroundHbox() {
