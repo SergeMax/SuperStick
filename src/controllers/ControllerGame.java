@@ -7,10 +7,12 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import models.Party;
 import views.ViewGame;
 import views.ViewHandler;
 
 public class ControllerGame implements EventHandler<KeyEvent> {
+    private final Party party;
     private ViewHandler viewHandler;
     private boolean rightpressed = false;
     private boolean leftpressed;
@@ -26,6 +28,8 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     public ControllerGame(ViewHandler viewHandler) {
         this.viewHandler = viewHandler;
         this.viewHandler.setEventHandlerGame(this);
+
+        party = new Party();
 
         viewGame = viewHandler.getViewGame();
 

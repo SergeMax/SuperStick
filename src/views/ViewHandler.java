@@ -23,9 +23,11 @@ public class ViewHandler extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         root = new Group();
+
+
        // rootGame = new BorderPane();
 
-        scene = new Scene(root, 8500, 1400);
+        scene = new Scene(root, 8500, 1050);
 
 
      //  scene.getStylesheets().add("../assets/css/styles.css");
@@ -41,10 +43,6 @@ public class ViewHandler extends Application {
 
         //primaryStage.setResizable(false);
         primaryStage.show();
-
-
-
-
 
     }
 

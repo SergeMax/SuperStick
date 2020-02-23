@@ -74,7 +74,7 @@ public class StickMan extends ImageView{
         });
         delaySetStickManFall.play();
 
-        ani.animJumpBakcToGround(this);
+            ani.animJumpBakcToGround(this);
         this.setFitWidth(150);
         this.setTranslateY(0);
     }
