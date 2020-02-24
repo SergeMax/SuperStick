@@ -2,23 +2,28 @@ package views;
 
 import anim.Anim;
 import controllers.ControllerGame;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import models.Enemy.Drone;
 import models.StickMan;
+
+import java.awt.*;
 
 public class ViewGame {
 
 
     private Group root;
     private HBox boxBackground;
-    private int compteurDefilement =0;
+    private int compteurDefilement = 0;
     private Timeline timelineDefilementRight = new Timeline();
     private Timeline timelineDefilementLeft = new Timeline();
     private StickMan stickMan;
@@ -28,20 +33,35 @@ public class ViewGame {
     private Group boxGroupPaysageEnemy;
     private Drone drone2;
     private ImageView logo;
+    private Boolean valide;
+    private int compteurPositonPlayer;
+    private ImageView lifeText;
+    private ImageView life;
+    private ImageView p1;
+    private ImageView p12;
 
 
     public ViewGame(Group root) {
 
         // root.setBackground(new Background( new BackgroundImage(new Image("assets/background/backgroundJeux.jpg"), BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-
+        this.valide = false;
         this.root = root;
         initBackgroundHbox();
         initLogo();
+        initLife();
         initGroupContainer();
         initStickMan();
-        initEnemy();
+        initEnemyAndPaysage();
         initBoxGroupPaysageEnemy();
         initTotalRoot();
+
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(25),
+                ae -> updatePositionPlayer()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
 
     }
 
@@ -56,36 +76,53 @@ public class ViewGame {
 
     }
 
-    public void initEnemy(){
+    public void initEnemyAndPaysage() {
         initDrone();
+        initPaysage();
     }
 
-    public void initDrone(){
+    private void initPaysage() {
+
+        p1 = new ImageView("assets/image/p1.png");
+        p1.setY(340);
+        p1.setFitWidth(1600);
+        p1.setOpacity(0.3);
+        p1.setPreserveRatio(true);
+
+        p12 = new ImageView("assets/image/P12.png");
+        p12.setY(340);
+        p12.setFitWidth(1600);
+        p12.setOpacity(0.7);
+        p12.setPreserveRatio(true);
+
+    }
+
+    public void initDrone() {
         drone1 = new Drone("assets/image/enemy/drone.png", 1700, 200, 100);
-        anim.animDrone(drone1, 0, -300, 0, -100, -200, 0, 200, 0  );
+        anim.animDrone(drone1, 0, -300, 0, -100, -200, 0, 200, 0);
 
         drone2 = new Drone("assets/image/enemy/drone.png", 2700, 100, 80);
         drone2.setRotate(30);
         drone2.setScaleX(-1);
-        anim.animDrone(drone2, 0, 200, 300, 0, -50, 200, 500, 300  );
+        anim.animDrone(drone2, 0, 200, 300, 0, -50, 200, 500, 300);
 
     }
 
 
-    public void initStickMan(){
+    public void initStickMan() {
 
-       stickMan = new StickMan("assets/gif/stickFatigue.gif");
-       // System.out.println(stickMan);
-       //imgStick = new ImageView("assets/gif/stickRun.gif");
+        stickMan = new StickMan("assets/gif/stickFatigue.gif");
+        // System.out.println(stickMan);
+        //imgStick = new ImageView("assets/gif/stickRun.gif");
 
     }
 
-    public void initLogo(){
+    public void initLogo() {
         logo = new ImageView("assets/image/Super Stick.png");
-        logo.setX(580);
+        logo.setX(500);
         logo.setY(40);
         logo.setOpacity(0.55);
-        logo.setFitWidth(300);
+        logo.setFitWidth(500);
         logo.setPreserveRatio(true);
 
     }
@@ -101,18 +138,22 @@ public class ViewGame {
 
     }
 
-    public void initTotalRoot(){
+    public void initTotalRoot() {
         root.getChildren().clear();
         root.getChildren().add(boxBackground);
         root.getChildren().add(logo);
+        root.getChildren().add(life);
+        root.getChildren().add(lifeText);
         root.getChildren().add(boxGroupPaysageEnemy);
         root.getChildren().add(stickMan);
     }
 
-    public void initBoxGroupPaysageEnemy(){
+    public void initBoxGroupPaysageEnemy() {
         boxGroupPaysageEnemy.getChildren().clear();
         boxGroupPaysageEnemy.getChildren().add(drone1);
         boxGroupPaysageEnemy.getChildren().add(drone2);
+        boxGroupPaysageEnemy.getChildren().add(p1);
+        boxGroupPaysageEnemy.getChildren().add(p12);
 
     }
 
@@ -129,11 +170,12 @@ public class ViewGame {
     public void defilementRight(int i) {
         int compteurDefilementEnd = compteurDefilement - 8000;
 
+
         final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
-        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
+        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxBackground.translateXProperty(), compteurDefilementEnd));
 
         final KeyFrame defillementBoxStart = new KeyFrame(Duration.ZERO, new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilement));
-        final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(),compteurDefilementEnd ));
+        final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilementEnd));
 
 
         timelineDefilementRight = new Timeline(defillementStart, defillementBoxStart, defillementBoxEnd, defillementEnd);
@@ -145,23 +187,82 @@ public class ViewGame {
         int compteurDefilementEnd = compteurDefilement + 8000;
 
         final KeyFrame defillementStart = new KeyFrame(Duration.ZERO, new KeyValue(boxBackground.translateXProperty(), compteurDefilement));
-        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxBackground.translateXProperty(),compteurDefilementEnd ));
+        final KeyFrame defillementEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxBackground.translateXProperty(), compteurDefilementEnd));
 
         final KeyFrame defillementBoxStart = new KeyFrame(Duration.ZERO, new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilement));
-        final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(),compteurDefilementEnd ));
+        final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilementEnd));
 
 
         timelineDefilementLeft = new Timeline(defillementStart, defillementBoxStart, defillementBoxEnd, defillementEnd);
         timelineDefilementLeft.setCycleCount(1);
     }
 
+
+    public void initLife() {
+        life = new ImageView("assets/image/life.png");
+        life.setX(900);
+        life.setY(40);
+        life.setOpacity(0);
+
+        lifeText = new ImageView("assets/image/lifeLabel.png");
+        lifeText.setFitWidth(150);
+        lifeText.setPreserveRatio(true);
+        lifeText.setTranslateX(650);
+        lifeText.setTranslateY(40);
+        lifeText.setOpacity(0);
+
+    }
+
     public Timeline getTimelineDefilementRight() {
         return timelineDefilementRight;
     }
 
+
+    private void updatePositionPlayer() {
+
+        compteurPositonPlayer = boxBackground.translateXProperty().intValue();
+
+        if (valide == false) {
+            System.out.println("ok2");
+
+
+            if (compteurPositonPlayer <= -300) {
+                valide = true;
+                System.out.println("ok3");
+                final KeyFrame logotStart = new KeyFrame(Duration.ZERO, new KeyValue(logo.xProperty(), 500));
+                final KeyFrame logoEnd = new KeyFrame(Duration.seconds(1), new KeyValue(logo.xProperty(), 50));
+
+                final KeyFrame logotWStart = new KeyFrame(Duration.ZERO, new KeyValue(logo.fitWidthProperty(), 500));
+                final KeyFrame logoWEnd = new KeyFrame(Duration.seconds(1), new KeyValue(logo.fitWidthProperty(), 250));
+
+                Timeline timelineLogo = new Timeline(logotStart, logoEnd, logotWStart, logoWEnd);
+                timelineLogo.setCycleCount(1);
+                timelineLogo.play();
+
+                final KeyFrame opacity = new KeyFrame(Duration.seconds(1), new KeyValue(life.opacityProperty(), 0));
+                final KeyFrame opacityEnd = new KeyFrame(Duration.seconds(3), new KeyValue(life.opacityProperty(), 1));
+
+                final KeyFrame opacityLifeText = new KeyFrame(Duration.seconds(1), new KeyValue(lifeText.opacityProperty(), 0));
+                final KeyFrame opacityLifeTextEnd = new KeyFrame(Duration.seconds(3), new KeyValue(lifeText.opacityProperty(), 1));
+
+                Timeline timelineOpacity = new Timeline(opacity, opacityEnd, opacityLifeText, opacityLifeTextEnd);
+                timelineOpacity.setCycleCount(1);
+                timelineOpacity.play();
+
+
+            }
+        }
+
+    }
+
+
     public int getCompteurDefilement() {
+
+
         compteurDefilement = boxBackground.translateXProperty().intValue();
-        return  compteurDefilement ;
+        System.out.println("ok");
+
+        return compteurDefilement;
     }
 
     public void setCompteurDefilement(int compteurDefilement) {

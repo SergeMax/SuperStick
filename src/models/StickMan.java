@@ -20,7 +20,7 @@ public class StickMan extends ImageView{
         this.setFitWidth(150);
         this.setPreserveRatio(true);
         this.setX(100);
-        this.setY(600);
+        this.setY(700);
 
     }
 
