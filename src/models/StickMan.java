@@ -13,7 +13,7 @@ public class StickMan extends ImageView{
 
     private Anim ani = new Anim();
     private PauseTransition delaySetStickManFall = new PauseTransition();
-    private ImageView laserYeux;
+    private ImageView laserYeux = null;
 
     public StickMan(String url) {
 

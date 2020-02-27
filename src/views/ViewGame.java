@@ -86,12 +86,14 @@ public class ViewGame {
         p1.setFitWidth(1600);
         p1.setOpacity(0.3);
         p1.setPreserveRatio(true);
+        p1.setPickOnBounds(false);
 
         p12 = new ImageView("assets/image/P12.png");
         p12.setY(340);
         p12.setFitWidth(1600);
         p12.setOpacity(0.7);
         p12.setPreserveRatio(true);
+        p12.setPickOnBounds(false);
 
     }
 
@@ -112,11 +114,11 @@ public class ViewGame {
         drone2.setPickOnBounds(false);
 
         timelineDrone2 = anim.animDrone(drone2, 0, 200, 300, 0, -50, 200, 500, 300);
-timelineDrone2.play();
+        timelineDrone2.play();
     }
 
-    private final ChangeListener<Number> checkIntersection = (ob, n, n1)->{
-        if (stickMan.getLayoutBounds().intersects(drone1.getLayoutBounds())){
+    private final ChangeListener<Number> checkIntersection = (ob, n, n1) -> {
+        if (stickMan.getLayoutBounds().intersects(drone1.getLayoutBounds())) {
             System.out.println("Intersection detected");
         }
     };
@@ -128,7 +130,6 @@ timelineDrone2.play();
         // System.out.println(stickMan);
         //imgStick = new ImageView("assets/gif/stickRun.gif");
         stickMan.setPickOnBounds(false);
-
 
 
     }
@@ -284,12 +285,11 @@ timelineDrone2.play();
             timelineOpacity.setCycleCount(10);
             timelineOpacity.play();
 
-           // PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(10));
-           // delayRemoveTir.setOnFinished(event -> {
+            // PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(10));
+            // delayRemoveTir.setOnFinished(event -> {
             //  timelineOpacity.stop();
             //});
             //delayRemoveTir.play();
-
 
 
         }
@@ -310,56 +310,64 @@ timelineDrone2.play();
             timelineOpacity.play();
         }
 
-        if (stickMan.getLaserYeux().intersects(
-                stickMan.getLaserYeux().sceneToLocal(drone2.localToScene(
-                        drone2.getBoundsInLocal())))) {
+
+        if (stickMan.getLaserYeux() != null) {
+            if (stickMan.getLaserYeux().intersects(
+                    stickMan.getLaserYeux().sceneToLocal(drone2.localToScene(
+                            drone2.getBoundsInLocal())))) {
 
 
-            if (tirToucheD1 == true){
-            tirToucheD1 = false;
-            timelineDrone2.stop();
-            Image explo = new Image("assets/image/explosion/source.gif");
-            PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(3));
-             delayRemoveTir.setOnFinished(event -> {
-              boxGroupPaysageEnemy.getChildren().remove(drone2);
-            });
-            delayRemoveTir.play();
+                if (tirToucheD1 == true) {
+                    tirToucheD1 = false;
+                    timelineDrone2.stop();
+                    Image explo = new Image("assets/image/explosion/source.gif");
+                    PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(3));
+                    delayRemoveTir.setOnFinished(event -> {
+                        boxGroupPaysageEnemy.getChildren().remove(drone2);
+                    });
+                    delayRemoveTir.play();
 
-            drone2.setImage(explo);
-            drone2.setFitWidth(200);}
-        }
-
-        if (stickMan.getLaserYeux().intersects(
-                stickMan.getLaserYeux().sceneToLocal(drone1.localToScene(
-                        drone1.getBoundsInLocal())))) {
-
-            if (tirToucheD2 == true) {
-                tirToucheD2 = false;
-                timelineDrone1.stop();
-
-                Image explo = new Image("assets/image/explosion/source.gif");
-
-                PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(3));
-                delayRemoveTir.setOnFinished(event -> {
-                    boxGroupPaysageEnemy.getChildren().remove(drone1);
-                });
-                delayRemoveTir.play();
-
-                drone1.setImage(explo);
-                drone1.setFitWidth(200);
-
-
+                    drone2.setImage(explo);
+                    drone2.setFitWidth(200);
+                }
             }
 
+            if (stickMan.getLaserYeux().intersects(
+                    stickMan.getLaserYeux().sceneToLocal(drone1.localToScene(
+                            drone1.getBoundsInLocal())))) {
+
+                if (tirToucheD2 == true) {
+                    tirToucheD2 = false;
+                    timelineDrone1.stop();
+
+                    Image explo = new Image("assets/image/explosion/source.gif");
+
+                    PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(3));
+                    delayRemoveTir.setOnFinished(event -> {
+                        boxGroupPaysageEnemy.getChildren().remove(drone1);
+                    });
+                    delayRemoveTir.play();
+
+                    drone1.setImage(explo);
+                    drone1.setFitWidth(200);
+
+
+                }
+
+            }
+        }
+
+        if (stickMan.intersects(
+                stickMan.sceneToLocal(p1.localToScene(
+                        p1.getBoundsInLocal())))) {
+
+        } else if (stickMan.getTranslateY() <= 0) {
+            stickMan.getAni().getTimelineJump().stop();
+            stickMan.getAni().animFall(stickMan);
         }
 
 
     }
-
-
-
-
-
 
 
     public int getCompteurDefilement() {
