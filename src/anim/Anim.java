@@ -11,6 +11,7 @@ public class Anim {
     private Timeline timelineJump = new Timeline();
     private Timeline timelineJumpBackToGround = new Timeline();
     private Timeline timelineTirYeux;
+    private Timeline timelineDrone;
 
 
     //Anim StickMan ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -65,7 +66,7 @@ public class Anim {
 
     //Anim Enemy :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Anim Drone :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public void animDrone(Drone drone, double startX, double midelX, double starty, double midelY, double midelY2, double midelY3, double midelY4, double endY ){
+    public Timeline animDrone(Drone drone, double startX, double midelX, double starty, double midelY, double midelY2, double midelY3, double midelY4, double endY ){
         //int stickManY = stickMan.translateYProperty().intValue();
         final KeyFrame yStart = new KeyFrame(Duration.ZERO, new KeyValue(drone.translateYProperty(), starty));
         final KeyFrame yMidel= new KeyFrame(Duration.seconds(1), new KeyValue(drone.translateYProperty(), midelY , Interpolator.EASE_OUT));
@@ -81,12 +82,15 @@ public class Anim {
         final KeyFrame xEnd = new KeyFrame(Duration.seconds(7), new KeyValue(drone.translateXProperty(), startX, Interpolator.EASE_OUT ));
 
 
+        timelineDrone = new Timeline(yStart, yMidel, yMidel2, yMidel3, yMidel4, yEnd, xStart, xMidel, xEnd);
+        timelineDrone.setCycleCount(Animation.INDEFINITE);
+       // timelineDrone.play();
+        return timelineDrone;
 
 
-        timelineJump = new Timeline(yStart, yMidel, yMidel2, yMidel3, yMidel4, yEnd, xStart, xMidel, xEnd);
-        timelineJump.setCycleCount(Animation.INDEFINITE);
-        timelineJump.play();
+    }
 
-
+    public Timeline getTimelineDrone() {
+        return timelineDrone;
     }
 }

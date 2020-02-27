@@ -13,6 +13,7 @@ public class StickMan extends ImageView{
 
     private Anim ani = new Anim();
     private PauseTransition delaySetStickManFall = new PauseTransition();
+    private ImageView laserYeux;
 
     public StickMan(String url) {
 
@@ -98,10 +99,12 @@ public class StickMan extends ImageView{
 
     }
 
-
+    public ImageView getLaserYeux() {
+        return laserYeux;
+    }
 
     public void tirLaser(Group root, StickMan stickMan){
-        ImageView laserYeux = new ImageView("assets/image/laserYeux.png");
+         laserYeux = new ImageView("assets/image/laserYeux.png");
         laserYeux.setFitWidth(100);
 
         int stickManY = stickMan.yProperty().intValue()+20;
