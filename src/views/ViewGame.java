@@ -37,6 +37,12 @@ public class ViewGame {
     private Timeline timelineDrone2;
     private boolean tirToucheD1 = true;
     private boolean tirToucheD2 = true;
+    private boolean tomber = true;
+    private ImageView p0;
+    private ImageView p11;
+    private ImageView pEau;
+    private ImageView p1bis2;
+    private ImageView p0bis1;
 
 
     public ViewGame(Group root) {
@@ -82,18 +88,56 @@ public class ViewGame {
     private void initPaysage() {
 
         p1 = new ImageView("assets/image/p1.png");
-        p1.setY(340);
+        p1.setY(320);
         p1.setFitWidth(1600);
-        p1.setOpacity(0.3);
+        p1.setOpacity(0.7);
         p1.setPreserveRatio(true);
         p1.setPickOnBounds(false);
 
-        p12 = new ImageView("assets/image/P12.png");
-        p12.setY(340);
-        p12.setFitWidth(1600);
-        p12.setOpacity(0.7);
+        p1bis2 = new ImageView("assets/image/p1.png");
+        p1bis2.setY(320);
+        p1bis2.setX(1600);
+        p1bis2.setFitWidth(1600);
+        p1bis2.setOpacity(0.7);
+        p1bis2.setPreserveRatio(true);
+        p1bis2.setPickOnBounds(false);
+        p1bis2.setScaleX(-1);
+
+        p11 = new ImageView("assets/image/deco/P11.png");
+        p11.setY(820);
+        p11.setFitWidth(700);
+        p11.setPreserveRatio(true);
+        p11.setOpacity(1);
+
+        p12 = new ImageView("assets/image/deco/P12.png");
+        p12.setY(820);
+        p12.setX(1040);
+        p12.setFitWidth(700);
+        p12.setOpacity(1);
         p12.setPreserveRatio(true);
         p12.setPickOnBounds(false);
+
+        p0 = new ImageView("assets/image/deco/p0.png");
+        p0.setFitWidth(2500);
+        p0.setPreserveRatio(true);
+        p0.setTranslateY(0);
+        p0.setOpacity(0.7);
+
+        p0bis1 = new ImageView("assets/image/deco/p0.png");
+        p0bis1.setFitWidth(2500);
+        p0bis1.setPreserveRatio(true);
+        p0bis1.setTranslateY(180);
+        p0bis1.setTranslateX(2450);
+        p0bis1.setOpacity(0.7);
+        p0bis1.setScaleX(-1);
+
+        pEau = new ImageView("assets/image/deco/eauVerte.png");
+        pEau.setFitWidth(2500);
+        pEau.setPreserveRatio(true);
+        pEau.setTranslateY(280);
+        pEau.setOpacity(0.9);
+
+
 
     }
 
@@ -167,10 +211,20 @@ public class ViewGame {
 
     public void initBoxGroupPaysageEnemy() {
         boxGroupPaysageEnemy.getChildren().clear();
+        boxGroupPaysageEnemy.getChildren().add(p0);
+        boxGroupPaysageEnemy.getChildren().add(p0bis1);
+
+        boxGroupPaysageEnemy.getChildren().add(p1);
+        boxGroupPaysageEnemy.getChildren().add(p1bis2);
+
+        boxGroupPaysageEnemy.getChildren().add(pEau);
+        boxGroupPaysageEnemy.getChildren().add(p11);
+        boxGroupPaysageEnemy.getChildren().add(p12);
+
+
         boxGroupPaysageEnemy.getChildren().add(drone1);
         boxGroupPaysageEnemy.getChildren().add(drone2);
-        boxGroupPaysageEnemy.getChildren().add(p1);
-        boxGroupPaysageEnemy.getChildren().add(p12);
+
 
     }
 
@@ -193,6 +247,7 @@ public class ViewGame {
 
         final KeyFrame defillementBoxStart = new KeyFrame(Duration.ZERO, new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilement));
         final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilementEnd));
+
 
 
         timelineDefilementRight = new Timeline(defillementStart, defillementBoxStart, defillementBoxEnd, defillementEnd);
@@ -302,7 +357,7 @@ public class ViewGame {
 
 
             final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
-            final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.2), new KeyValue(stickMan.opacityProperty(), 0));
+            final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
 
             Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
             timelineOpacity.setAutoReverse(true);
@@ -360,10 +415,25 @@ public class ViewGame {
         if (stickMan.intersects(
                 stickMan.sceneToLocal(p1.localToScene(
                         p1.getBoundsInLocal())))) {
+            tomber=true;
+            System.out.println(stickMan.getImage().getUrl());
 
-        } else if (stickMan.getTranslateY() <= 0) {
-            stickMan.getAni().getTimelineJump().stop();
+        } else if (stickMan.getImage().getUrl().equals("file:/C:/Projet%20Java/SuperStick/out/production/SuperStick/assets/gif/stickRun.gif")){
+
+            if (tomber == true){
+                tomber=false;
+           // stickMan.getAni().getTimelineJump().stop();
+
+                final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
+                final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
+
+                Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
+                timelineOpacity.setAutoReverse(true);
+                timelineOpacity.setCycleCount(10);
+                timelineOpacity.play();
+
             stickMan.getAni().animFall(stickMan);
+            }
         }
 
 
