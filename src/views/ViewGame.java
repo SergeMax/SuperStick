@@ -2,10 +2,8 @@ package views;
 
 import anim.Anim;
 import controllers.ControllerGame;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -101,12 +99,25 @@ public class ViewGame {
         drone1 = new Drone("assets/image/enemy/drone.png", 1700, 200, 100);
         anim.animDrone(drone1, 0, -300, 0, -100, -200, 0, 200, 0);
 
+        drone1.translateXProperty().addListener(checkIntersection);
+        drone1.translateYProperty().addListener(checkIntersection);
+        drone1.setPickOnBounds(false);
+
+
         drone2 = new Drone("assets/image/enemy/drone.png", 2700, 100, 80);
         drone2.setRotate(30);
         drone2.setScaleX(-1);
+        drone2.setPickOnBounds(false);
+
         anim.animDrone(drone2, 0, 200, 300, 0, -50, 200, 500, 300);
 
     }
+
+    private final ChangeListener<Number> checkIntersection = (ob, n, n1)->{
+        if (stickMan.getLayoutBounds().intersects(drone1.getLayoutBounds())){
+            System.out.println("Intersection detected");
+        }
+    };
 
 
     public void initStickMan() {
@@ -114,6 +125,9 @@ public class ViewGame {
         stickMan = new StickMan("assets/gif/stickFatigue.gif");
         // System.out.println(stickMan);
         //imgStick = new ImageView("assets/gif/stickRun.gif");
+        stickMan.setPickOnBounds(false);
+
+
 
     }
 
@@ -253,7 +267,53 @@ public class ViewGame {
             }
         }
 
+        if (stickMan.intersects(
+                stickMan.sceneToLocal(drone1.localToScene(
+                        drone1.getBoundsInLocal())))) {
+            stickMan.getAni().getTimelineJump().stop();
+            stickMan.getAni().getTimelineJumpBackToGround().play();
+
+
+            final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
+            final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.2), new KeyValue(stickMan.opacityProperty(), 0));
+
+            Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
+            timelineOpacity.setAutoReverse(true);
+            timelineOpacity.setCycleCount(10);
+            timelineOpacity.play();
+
+           // PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(10));
+           // delayRemoveTir.setOnFinished(event -> {
+            //  timelineOpacity.stop();
+            //});
+            //delayRemoveTir.play();
+
+
+
+        }
+
+        if (stickMan.intersects(
+                stickMan.sceneToLocal(drone2.localToScene(
+                        drone2.getBoundsInLocal())))) {
+            stickMan.getAni().getTimelineJump().stop();
+            stickMan.getAni().getTimelineJumpBackToGround().play();
+
+
+            final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
+            final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.2), new KeyValue(stickMan.opacityProperty(), 0));
+
+            Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
+            timelineOpacity.setAutoReverse(true);
+            timelineOpacity.setCycleCount(10);
+            timelineOpacity.play();
+        }
+
     }
+
+
+
+
+
 
 
     public int getCompteurDefilement() {
