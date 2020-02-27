@@ -90,18 +90,19 @@ public class ViewGame {
         p1 = new ImageView("assets/image/p1.png");
         p1.setY(320);
         p1.setFitWidth(1600);
-        p1.setOpacity(0.7);
+        p1.setOpacity(0.6);
         p1.setPreserveRatio(true);
         p1.setPickOnBounds(false);
+        p1.setScaleX(-1);
+
 
         p1bis2 = new ImageView("assets/image/p1.png");
         p1bis2.setY(320);
         p1bis2.setX(1600);
         p1bis2.setFitWidth(1600);
-        p1bis2.setOpacity(0.7);
+        p1bis2.setOpacity(0.6);
         p1bis2.setPreserveRatio(true);
         p1bis2.setPickOnBounds(false);
-        p1bis2.setScaleX(-1);
 
         p11 = new ImageView("assets/image/deco/P11.png");
         p11.setY(820);
