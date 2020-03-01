@@ -14,6 +14,7 @@ public class Anim {
     private Timeline timelineTirYeux;
     private Timeline timelineDrone;
     private Timeline timelineFall;
+    private Timeline timelineJumpBackToGround3;
 
 
     //Anim StickMan ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -51,6 +52,23 @@ public class Anim {
         timelineJumpBackToGround = new Timeline(JumpStart, JumpStartStick, JumpEndStick, JumpEnd);
         timelineJumpBackToGround.setCycleCount(1);
         timelineJumpBackToGround.play();
+    }
+
+    public void animJumpBakcToGroundInt(Pane stickManPane, StickMan stickMan, int YStickManPane, int YstickMan) {
+
+        int stickManPaneY = stickManPane.translateYProperty().intValue();
+        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), stickManPaneY));
+        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickManPane.translateYProperty(), YStickManPane));
+
+        int stickManY = stickMan.translateYProperty().intValue();
+
+        final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), stickManY));
+        final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), YstickMan));
+
+
+        timelineJumpBackToGround3 = new Timeline(JumpStart, JumpStartStick, JumpEndStick, JumpEnd);
+        timelineJumpBackToGround3.setCycleCount(1);
+        timelineJumpBackToGround3.play();
     }
 
     public void animTirYeux(ImageView laser, StickMan stickMan) {
@@ -113,7 +131,7 @@ public class Anim {
 
         int stickManY = stickMan.translateYProperty().intValue();
 
-        if (stickManY < 0){
+        if (stickManY >= 0){
 
         final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
         final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 300));

@@ -171,6 +171,8 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
 
             if (keyEvent.getCode() == KeyCode.SPACE) {
+
+              //  viewGame.setJumpDowTop13(false);
                 spacePresseforBeat = true;
                 delayRemoveJumpDown.stop();
                 // viewHandler.getViewGame().setCompteurDefilement(viewHandler.getViewGame().getCompteurDefilement());
@@ -188,13 +190,16 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                          //   spacePresse = false;
                      //   });
                       //  delaySetStickManFall.play();
-                    } else if (spacePresse == false && rightpressed == true) {
+                    }
+                    else if (spacePresse == false && rightpressed == true) {
                         viewGame.getStickMan().getDelaySetStickManFall().stop();
 
                         viewGame.getStickMan().setStickManJump();
                         spacePresse = true;
                         spacePresseforBeat = true;
                     }
+
+
 
                 }
             }
@@ -211,8 +216,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                         viewGame.getStickMan().setStickManBeatRunRight();
                         beatStart = true;
                     }
-
-
                 }
 
             }
@@ -294,7 +297,8 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                     viewGame.getStickMan().getAni().getTimelineJump().stop();
                     viewHandler.getViewGame().setCompteurDefilement(viewHandler.getViewGame().getCompteurDefilement());
 
-                    if (leftpressed == true || combineSpaceAndRightOrLeft == true) {
+
+                 if (leftpressed == true || combineSpaceAndRightOrLeft == true) {
                         viewGame.getStickMan().setStickManJumpDownLeft();
                         delayRemoveJumpDown = new PauseTransition(Duration.seconds(0.5));
                         delayRemoveJumpDown.setOnFinished(eventt -> {
@@ -307,7 +311,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                         delayRemoveJumpDown = new PauseTransition(Duration.seconds(0.5));
                         delayRemoveJumpDown.setOnFinished(eventt -> {
                             viewGame.getStickMan().setStickManRunRight();
-
                         });
                         delayRemoveJumpDown.play();
                     } else if (rightpressed == false || combineSpaceAndRightOrLeft == false) {
@@ -335,7 +338,21 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                     }
 
+                    if (viewGame.getCompteurDefilement() < -1440 && viewGame.getCompteurDefilement()> -2340 && viewGame.getJumpDowTop13() == true ){
+                      //  viewGame.getStickMan().getDelaySetStickManFall().stop();
+                        viewGame.getStickMan().getAni().getTimelineJumpBackToGround().stop();
+                        viewGame.getStickMan().getAni().animJumpBakcToGroundInt(viewGame.getStickManPane(), viewGame.getStickMan(), 500, -210);
+                        System.out.println("condition ok");
+                    }
+
                 } else {
+
+                    if (viewGame.getCompteurDefilement() < -1640 && viewGame.getCompteurDefilement()> -2340 && viewGame.getJumpDowTop13() == true ){
+                        //  viewGame.getStickMan().getDelaySetStickManFall().stop();
+                        viewGame.getStickMan().getAni().getTimelineJumpBackToGround().stop();
+                        viewGame.getStickMan().getAni().animJumpBakcToGroundInt(viewGame.getStickManPane(), viewGame.getStickMan(), 500, -210);
+                        System.out.println("condition ok");
+                    }
                    // viewGame.getStickMan().setStickManSimpleFall();
                 }
                 leftpressedAndSPace = false;

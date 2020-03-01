@@ -48,7 +48,15 @@ public class ViewGame {
     private ImageView p0bis1;
     private Pane stickManPane;
     private ImageView p13;
+    private Boolean jumpDowTop13 = false;
 
+    public Boolean getJumpDowTop13() {
+        return jumpDowTop13;
+    }
+
+    public void setJumpDowTop13(Boolean jumpDowTop13) {
+        this.jumpDowTop13 = jumpDowTop13;
+    }
 
     public ViewGame(Group root) {
 
@@ -322,6 +330,7 @@ public class ViewGame {
     private void updatePositionPlayer() {
 
         compteurPositonPlayer = boxBackground.translateXProperty().intValue();
+        compteurDefilement  = boxBackground.translateXProperty().intValue();
 
         if (valide == false) {
             //System.out.println("ok2");
@@ -453,10 +462,10 @@ public class ViewGame {
 
         } else if ((!stickManPane.intersects(
                 stickManPane.sceneToLocal(p13.localToScene(
-                        p13.getBoundsInLocal())))|| stickMan.translateYProperty().getValue() >-200) &&!stickMan.getStatuStick().equals("jumpRight") && !stickMan.getStatuStick().equals("jumpLeft")
+                        p13.getBoundsInLocal()))) || stickMan.translateYProperty().getValue() >-200) &&!stickMan.getStatuStick().equals("jumpRight") && !stickMan.getStatuStick().equals("jumpLeft")
                 && !stickMan.getStatuStick().equals("jumpDownLeft") && !stickMan.getStatuStick().equals("jumpDownRight") && !stickMan.getStatuStick().equals("fatigue")){
 
-            if (tomber == true && stickMan.yProperty().getValue() > 699 ){
+            if (tomber == true && stickMan.translateYProperty().getValue() < 1 && jumpDowTop13 == false ){
                 tomber=false;
            // stickMan.getAni().getTimelineJump().stop();
 
@@ -474,26 +483,36 @@ public class ViewGame {
             }
         }
 
-        if (stickMan.translateYProperty().getValue() <-200 && stickManPane.intersects(
+        if ((compteurDefilement < -1440
+                && stickMan.translateYProperty().getValue() <-200 && compteurDefilement > -2140)) {
+            jumpDowTop13 = true;
+        //    if (jumpDowTop13 == false){
+
+                //stickMan.getAni().getTimelineJumpBackToGround().stop();
+
+                int stickManPaneY = stickManPane.translateYProperty().intValue();
+                int stickManY = stickMan.translateYProperty().intValue();
+
+                //  stickManPane.setTranslateY(480);
+                //stickMan.setTranslateY(-230);
+
+        }else if (jumpDowTop13 == true && !stickManPane.intersects(
                 stickManPane.sceneToLocal(p13.localToScene(
-                        p13.getBoundsInLocal())))) {
-            stickMan.getAni().getTimelineJumpBackToGround().stop();
+                        p13.getBoundsInLocal())))){
+            stickMan.getAni().getTimelineJumpBackToGround().play();
+            jumpDowTop13 = false;
+        }
 
-            int stickManPaneY = stickManPane.translateYProperty().intValue();
-            int stickManY = stickMan.translateYProperty().intValue();
-
-            stickManPane.setTranslateY(stickManPaneY);
-            stickMan.setTranslateY(stickManY);
 
         }
-    }
+
 
 
     public int getCompteurDefilement() {
 
 
         compteurDefilement = boxBackground.translateXProperty().intValue();
-        System.out.println("ok");
+        System.out.println(compteurDefilement);
 
         return compteurDefilement;
     }
