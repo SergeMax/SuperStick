@@ -2,6 +2,7 @@ package anim;
 
 import javafx.animation.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import models.Enemy.Drone;
 import models.StickMan;
@@ -17,25 +18,37 @@ public class Anim {
 
     //Anim StickMan ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void animJump(StickMan stickMan) {
+    public void animJump(Pane stickManPane, StickMan stickMan) {
+
+        int stickManYPane = stickManPane.translateYProperty().intValue();
+        final KeyFrame JumpStartPane = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), stickManYPane));
+        final KeyFrame JumpMiddlePane = new KeyFrame(Duration.seconds(1), new KeyValue(stickManPane.translateYProperty(), stickManYPane - 300));
+        final KeyFrame JumpEndPane = new KeyFrame(Duration.seconds(2), new KeyValue(stickManPane.translateYProperty(), 700));
 
         int stickManY = stickMan.translateYProperty().intValue();
         final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), stickManY));
         final KeyFrame JumpMiddle = new KeyFrame(Duration.seconds(1), new KeyValue(stickMan.translateYProperty(), stickManY - 300));
         final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(2), new KeyValue(stickMan.translateYProperty(), 0));
 
-        timelineJump = new Timeline(JumpStart, JumpMiddle, JumpEnd);
+
+        timelineJump = new Timeline(JumpStart, JumpStartPane, JumpMiddlePane, JumpMiddle, JumpEndPane, JumpEnd);
         timelineJump.setCycleCount(1);
         timelineJump.play();
     }
 
-    public void animJumpBakcToGround(StickMan stickMan) {
+    public void animJumpBakcToGround(Pane stickManPane, StickMan stickMan) {
+
+        int stickManPaneY = stickManPane.translateYProperty().intValue();
+        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), stickManPaneY));
+        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickManPane.translateYProperty(), 700));
 
         int stickManY = stickMan.translateYProperty().intValue();
-        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), stickManY));
-        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 0));
 
-        timelineJumpBackToGround = new Timeline(JumpStart, JumpEnd);
+        final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), stickManY));
+        final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 0));
+
+
+        timelineJumpBackToGround = new Timeline(JumpStart, JumpStartStick, JumpEndStick, JumpEnd);
         timelineJumpBackToGround.setCycleCount(1);
         timelineJumpBackToGround.play();
     }
@@ -95,16 +108,22 @@ public class Anim {
         return timelineDrone;
     }
 
-    public void animFall(StickMan stickMan) {
+    public void animFall(Pane stickManPane, StickMan stickMan) {
 
 
-       // int stickManY = stickMan.translateYProperty().intValue();
-        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
-        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 300));
+        int stickManY = stickMan.translateYProperty().intValue();
 
-        timelineFall = new Timeline(JumpStart, JumpEnd);
+        if (stickManY < 0){
+
+        final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
+        final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 300));
+
+        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), 700));
+        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickManPane.translateYProperty(), 1300));
+
+        timelineFall = new Timeline(JumpStart, JumpStartStick, JumpEnd, JumpEndStick);
         timelineFall.setCycleCount(1);
-        timelineFall.play();
+        timelineFall.play();}
     }
 }
 

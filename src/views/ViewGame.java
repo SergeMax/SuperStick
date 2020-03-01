@@ -3,11 +3,14 @@ package views;
 import anim.Anim;
 import controllers.ControllerGame;
 import javafx.animation.*;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import models.Enemy.Drone;
 import models.StickMan;
@@ -43,6 +46,8 @@ public class ViewGame {
     private ImageView pEau;
     private ImageView p1bis2;
     private ImageView p0bis1;
+    private Pane stickManPane;
+    private ImageView p13;
 
 
     public ViewGame(Group root) {
@@ -61,7 +66,7 @@ public class ViewGame {
 
 
         Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(25),
+                Duration.millis(10),
                 ae -> updatePositionPlayer()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -118,6 +123,17 @@ public class ViewGame {
         p12.setPreserveRatio(true);
         p12.setPickOnBounds(false);
 
+        p13 = new ImageView("assets/image/deco/P12.png");
+        p13.setY(620);
+        p13.setX(1640);
+        p13.setFitWidth(700);
+        p13.setFitHeight(100);
+
+        p13.setOpacity(1);
+        //p13.setPreserveRatio(true);
+        p13.setPickOnBounds(false);
+
+
         p0 = new ImageView("assets/image/deco/p0.png");
         p0.setFitWidth(2500);
         p0.setPreserveRatio(true);
@@ -152,7 +168,6 @@ public class ViewGame {
 
         timelineDrone1.play();
 
-
         drone2 = new Drone("assets/image/enemy/drone.png", 2700, 100, 80);
         drone2.setRotate(30);
         drone2.setScaleX(-1);
@@ -169,12 +184,20 @@ public class ViewGame {
     };
 
 
+    public Pane getStickManPane() {
+        return stickManPane;
+    }
+
     public void initStickMan() {
 
         stickMan = new StickMan("assets/gif/stickFatigue.gif");
         // System.out.println(stickMan);
         //imgStick = new ImageView("assets/gif/stickRun.gif");
         stickMan.setPickOnBounds(false);
+
+        stickManPane = stickMan.getStickManPane();
+
+       // stickMan.getStickManPane().getChildren().add(stickMan);
 
 
     }
@@ -207,6 +230,9 @@ public class ViewGame {
         root.getChildren().add(life);
         root.getChildren().add(lifeText);
         root.getChildren().add(boxGroupPaysageEnemy);
+
+        root.getChildren().add(stickMan.getStickManPane());
+
         root.getChildren().add(stickMan);
     }
 
@@ -221,6 +247,8 @@ public class ViewGame {
         boxGroupPaysageEnemy.getChildren().add(pEau);
         boxGroupPaysageEnemy.getChildren().add(p11);
         boxGroupPaysageEnemy.getChildren().add(p12);
+        boxGroupPaysageEnemy.getChildren().add(p13);
+
 
 
         boxGroupPaysageEnemy.getChildren().add(drone1);
@@ -296,7 +324,7 @@ public class ViewGame {
         compteurPositonPlayer = boxBackground.translateXProperty().intValue();
 
         if (valide == false) {
-            System.out.println("ok2");
+            //System.out.println("ok2");
 
 
             if (compteurPositonPlayer <= -300) {
@@ -326,8 +354,8 @@ public class ViewGame {
             }
         }
 
-        if (stickMan.intersects(
-                stickMan.sceneToLocal(drone1.localToScene(
+        if (stickManPane.intersects(
+                stickManPane.sceneToLocal(drone1.localToScene(
                         drone1.getBoundsInLocal())))) {
             stickMan.getAni().getTimelineJump().stop();
             stickMan.getAni().getTimelineJumpBackToGround().play();
@@ -350,8 +378,8 @@ public class ViewGame {
 
         }
 
-        if (stickMan.intersects(
-                stickMan.sceneToLocal(drone2.localToScene(
+        if (stickManPane.intersects(
+                stickManPane.sceneToLocal(drone2.localToScene(
                         drone2.getBoundsInLocal())))) {
             stickMan.getAni().getTimelineJump().stop();
             stickMan.getAni().getTimelineJumpBackToGround().play();
@@ -365,6 +393,8 @@ public class ViewGame {
             timelineOpacity.setCycleCount(10);
             timelineOpacity.play();
         }
+
+
 
 
         if (stickMan.getLaserYeux() != null) {
@@ -413,15 +443,20 @@ public class ViewGame {
             }
         }
 
-        if (stickMan.intersects(
-                stickMan.sceneToLocal(p1.localToScene(
-                        p1.getBoundsInLocal())))) {
+        if (stickManPane.intersects(
+                stickManPane.sceneToLocal(p11.localToScene(
+                        p11.getBoundsInLocal()))) || stickManPane.intersects(
+                stickManPane.sceneToLocal(p12.localToScene(
+                        p12.getBoundsInLocal())))  ) {
             tomber=true;
-            System.out.println(stickMan.getImage().getUrl());
+            //System.out.println(stickMan.getImage().getUrl());
 
-        } else if (stickMan.getImage().getUrl().equals("file:/C:/Projet%20Java/SuperStick/out/production/SuperStick/assets/gif/stickRun.gif")){
+        } else if ((!stickManPane.intersects(
+                stickManPane.sceneToLocal(p13.localToScene(
+                        p13.getBoundsInLocal())))|| stickMan.translateYProperty().getValue() >-200) &&!stickMan.getStatuStick().equals("jumpRight") && !stickMan.getStatuStick().equals("jumpLeft")
+                && !stickMan.getStatuStick().equals("jumpDownLeft") && !stickMan.getStatuStick().equals("jumpDownRight") && !stickMan.getStatuStick().equals("fatigue")){
 
-            if (tomber == true){
+            if (tomber == true && stickMan.yProperty().getValue() > 699 ){
                 tomber=false;
            // stickMan.getAni().getTimelineJump().stop();
 
@@ -433,11 +468,24 @@ public class ViewGame {
                 timelineOpacity.setCycleCount(10);
                 timelineOpacity.play();
 
-            stickMan.getAni().animFall(stickMan);
+            stickMan.getAni().animFall(stickManPane, stickMan);
+            }else if(tomber == true){
+                stickMan.setStickManJumpDown();
             }
         }
 
+        if (stickMan.translateYProperty().getValue() <-200 && stickManPane.intersects(
+                stickManPane.sceneToLocal(p13.localToScene(
+                        p13.getBoundsInLocal())))) {
+            stickMan.getAni().getTimelineJumpBackToGround().stop();
 
+            int stickManPaneY = stickManPane.translateYProperty().intValue();
+            int stickManY = stickMan.translateYProperty().intValue();
+
+            stickManPane.setTranslateY(stickManPaneY);
+            stickMan.setTranslateY(stickManY);
+
+        }
     }
 
 
