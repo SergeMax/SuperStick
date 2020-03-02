@@ -499,7 +499,7 @@ public class ViewGame {
         }else if (jumpDowTop13 == true && !stickManPane.intersects(
                 stickManPane.sceneToLocal(p13.localToScene(
                         p13.getBoundsInLocal())))){
-            stickMan.getAni().getTimelineJumpBackToGround().play();
+           // stickMan.getAni().getTimelineJumpBackToGround().play();
             jumpDowTop13 = false;
         }
 
