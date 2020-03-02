@@ -15,6 +15,8 @@ import javafx.util.Duration;
 import models.Enemy.Drone;
 import models.StickMan;
 
+import java.io.File;
+
 public class ViewGame {
 
 
@@ -49,6 +51,7 @@ public class ViewGame {
     private Pane stickManPane;
     private ImageView p13;
     private Boolean jumpDowTop13 = false;
+    private ImageView pEau2;
 
     public Boolean getJumpDowTop13() {
         return jumpDowTop13;
@@ -156,11 +159,23 @@ public class ViewGame {
         p0bis1.setOpacity(0.7);
         p0bis1.setScaleX(-1);
 
-        pEau = new ImageView("assets/image/deco/eauVerte.png");
+        pEau = new ImageView("assets/image/deco/eauGif200.gif");
         pEau.setFitWidth(2500);
         pEau.setPreserveRatio(true);
-        pEau.setTranslateY(280);
-        pEau.setOpacity(0.9);
+        pEau.setTranslateY(850);
+        pEau.setTranslateX(0);
+        pEau.setX(0);
+        pEau.setY(0);
+
+        pEau2 = new ImageView("assets/image/deco/eauGif200.gif");
+        pEau2.setFitWidth(2500);
+        pEau2.setPreserveRatio(true);
+        pEau2.setTranslateY(850);
+        pEau2.setTranslateX(2500);
+        pEau2.setX(0);
+        pEau2.setY(0);
+
+       // pEau.setOpacity(0.9);
 
 
 
@@ -253,6 +268,8 @@ public class ViewGame {
         boxGroupPaysageEnemy.getChildren().add(p1bis2);
 
         boxGroupPaysageEnemy.getChildren().add(pEau);
+        boxGroupPaysageEnemy.getChildren().add(pEau2);
+
         boxGroupPaysageEnemy.getChildren().add(p11);
         boxGroupPaysageEnemy.getChildren().add(p12);
         boxGroupPaysageEnemy.getChildren().add(p13);
