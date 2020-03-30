@@ -1,12 +1,10 @@
 package controllers;
 
-import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import models.Party;
 import views.ViewGame;
 import views.ViewHandler;
 
