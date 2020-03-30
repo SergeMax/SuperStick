@@ -7,6 +7,8 @@ import javafx.util.Duration;
 import models.Enemy.Drone;
 import models.StickMan;
 
+import java.awt.*;
+
 public class Anim {
 
     private Timeline timelineJump = new Timeline();
@@ -131,17 +133,33 @@ public class Anim {
 
         int stickManY = stickMan.translateYProperty().intValue();
 
-        if (stickManY >= 0){
+        if (stickManY >= 0) {
 
-        final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
-        final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 300));
+            final KeyFrame JumpStartStick = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.translateYProperty(), 0));
+            final KeyFrame JumpEndStick = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickMan.translateYProperty(), 300));
 
-        final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), 700));
-        final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickManPane.translateYProperty(), 1300));
+            final KeyFrame JumpStart = new KeyFrame(Duration.ZERO, new KeyValue(stickManPane.translateYProperty(), 700));
+            final KeyFrame JumpEnd = new KeyFrame(Duration.seconds(0.5), new KeyValue(stickManPane.translateYProperty(), 1300));
 
-        timelineFall = new Timeline(JumpStart, JumpStartStick, JumpEnd, JumpEndStick);
-        timelineFall.setCycleCount(1);
-        timelineFall.play();}
+            timelineFall = new Timeline(JumpStart, JumpStartStick, JumpEnd, JumpEndStick);
+            timelineFall.setCycleCount(1);
+            timelineFall.play();
+        }
+    }
+
+    public void animRobot(ImageView robot) {
+
+        final KeyFrame Start = new KeyFrame(Duration.ZERO, new KeyValue(robot.translateXProperty(), 600));
+
+        final KeyFrame end = new KeyFrame(Duration.seconds(6), new KeyValue(robot.translateXProperty(), -800));
+
+
+
+        timelineFall = new Timeline(Start,  end);
+        timelineFall.setCycleCount(Animation.INDEFINITE);
+        timelineFall.setAutoReverse(true);
+        timelineFall.play();
+
     }
 }
 

@@ -368,21 +368,32 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
                 });
                 delaySpacePress.play();
-
             }
 
             if (keyEvent.getCode() == KeyCode.N) {
 
                 if (rightpressed == true && spacePresse == false) {
                     viewGame.getStickMan().setStickManRunRight();
+                    viewGame.getStickMan().setTranslateY(0);
                     beatStart = false;
-
                 }
 
                 if (rightpressed == false && spacePresse == false) {
                     viewGame.getStickMan().setStickManFatigue();
+                    viewGame.getStickMan().setTranslateY(0);
                     beatStart = false;
+                }
 
+                if (leftpressed == true && spacePresse == false) {
+                    viewGame.getStickMan().setStickManRunLeft();
+                    viewGame.getStickMan().setTranslateY(0);
+                    beatStart = false;
+                }
+
+                if (leftpressed == false && spacePresse == false) {
+                    viewGame.getStickMan().setStickManFatigue();
+                    viewGame.getStickMan().setTranslateY(0);
+                    beatStart = false;
                 }
 
             }

@@ -7,12 +7,18 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import models.Enemy.Drone;
+import models.Enemy.Eolienne;
+import models.Enemy.RobotBiped;
 import models.StickMan;
 
 import java.io.File;
@@ -35,7 +41,7 @@ public class ViewGame {
     private Boolean valide;
     private int compteurPositonPlayer;
     private ImageView lifeText;
-    private ImageView life;
+    private Text life;
     private ImageView p1;
     private ImageView p12;
     private Timeline timelineDrone1;
@@ -52,6 +58,10 @@ public class ViewGame {
     private ImageView p13;
     private Boolean jumpDowTop13 = false;
     private ImageView pEau2;
+    private RobotBiped rob1;
+    private ImageView p14;
+    private Eolienne eole1;
+    private boolean perduu;
 
     public Boolean getJumpDowTop13() {
         return jumpDowTop13;
@@ -68,13 +78,15 @@ public class ViewGame {
         this.root = root;
         initBackgroundHbox();
         initLogo();
-        initLife();
+
         initGroupContainer();
         initStickMan();
+        initLife();
         initEnemyAndPaysage();
         initBoxGroupPaysageEnemy();
         initTotalRoot();
 
+        perduu= false;
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(10),
@@ -91,14 +103,17 @@ public class ViewGame {
         boxGroupPaysageEnemy.minHeight(1050);
     }
 
-    public void setEvent(ControllerGame controllerGame) {
-
+    public void initRobot() {
+        rob1 = new RobotBiped("assets/gif/rob1.gif", 3700, 680, 170);
+        anim.animRobot(rob1);
 
     }
 
     public void initEnemyAndPaysage() {
         initDrone();
         initPaysage();
+        initRobot();
+        initEolienne();
     }
 
     private void initPaysage() {
@@ -144,6 +159,17 @@ public class ViewGame {
         //p13.setPreserveRatio(true);
         p13.setPickOnBounds(false);
 
+        p14 = new ImageView("assets/image/deco/P12.png");
+        p14.setY(820);
+        p14.setX(2900);
+        p14.setFitWidth(1800);
+        p14.setOpacity(1);
+        p14.setFitHeight(100);
+
+        //p14.setPreserveRatio(true);
+        p14.setPickOnBounds(false);
+        p14.setScaleX(-1);
+
 
         p0 = new ImageView("assets/image/deco/p0.png");
         p0.setFitWidth(2500);
@@ -175,8 +201,7 @@ public class ViewGame {
         pEau2.setX(0);
         pEau2.setY(0);
 
-       // pEau.setOpacity(0.9);
-
+        // pEau.setOpacity(0.9);
 
 
     }
@@ -200,6 +225,12 @@ public class ViewGame {
         timelineDrone2.play();
     }
 
+    public void initEolienne() {
+        eole1 = new Eolienne("assets/gif/eolienne.gif", 3900, 300, 320);
+        eole1.setPickOnBounds(false);
+        eole1.setScaleX(-1);
+    }
+
     private final ChangeListener<Number> checkIntersection = (ob, n, n1) -> {
         if (stickMan.getLayoutBounds().intersects(drone1.getLayoutBounds())) {
             System.out.println("Intersection detected");
@@ -220,7 +251,7 @@ public class ViewGame {
 
         stickManPane = stickMan.getStickManPane();
 
-       // stickMan.getStickManPane().getChildren().add(stickMan);
+        // stickMan.getStickManPane().getChildren().add(stickMan);
 
 
     }
@@ -243,17 +274,16 @@ public class ViewGame {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         boxBackground.setBackground(new Background(myBI));
-
     }
 
     public void initTotalRoot() {
         root.getChildren().clear();
         root.getChildren().add(boxBackground);
         root.getChildren().add(logo);
-        root.getChildren().add(life);
+
         root.getChildren().add(lifeText);
         root.getChildren().add(boxGroupPaysageEnemy);
-
+        root.getChildren().add(life);
         root.getChildren().add(stickMan.getStickManPane());
 
         root.getChildren().add(stickMan);
@@ -273,11 +303,13 @@ public class ViewGame {
         boxGroupPaysageEnemy.getChildren().add(p11);
         boxGroupPaysageEnemy.getChildren().add(p12);
         boxGroupPaysageEnemy.getChildren().add(p13);
-
+        boxGroupPaysageEnemy.getChildren().add(p14);
 
 
         boxGroupPaysageEnemy.getChildren().add(drone1);
         boxGroupPaysageEnemy.getChildren().add(drone2);
+        boxGroupPaysageEnemy.getChildren().add(eole1);
+        boxGroupPaysageEnemy.getChildren().add(rob1);
 
 
     }
@@ -303,7 +335,6 @@ public class ViewGame {
         final KeyFrame defillementBoxEnd = new KeyFrame(Duration.seconds(32), new KeyValue(boxGroupPaysageEnemy.translateXProperty(), compteurDefilementEnd));
 
 
-
         timelineDefilementRight = new Timeline(defillementStart, defillementBoxStart, defillementBoxEnd, defillementEnd);
         timelineDefilementRight.setCycleCount(1);
 
@@ -323,20 +354,29 @@ public class ViewGame {
         timelineDefilementLeft.setCycleCount(1);
     }
 
-
     public void initLife() {
-        life = new ImageView("assets/image/life.png");
-        life.setX(900);
-        life.setY(40);
+        life = new Text("" + stickMan.getLife());
+        life.setX(1050);
+        life.setY(78);
+        life.setFont(new Font(35));
+
+        life.setWrappingWidth(200);
+        life.setFill(Color.WHITE);
+
+
         life.setOpacity(0);
 
         lifeText = new ImageView("assets/image/lifeLabel.png");
         lifeText.setFitWidth(150);
         lifeText.setPreserveRatio(true);
-        lifeText.setTranslateX(650);
+        lifeText.setTranslateX(850);
         lifeText.setTranslateY(40);
         lifeText.setOpacity(0);
 
+    }
+
+    public void actuLife() {
+        life.setText("" + stickMan.getLife());
     }
 
     public Timeline getTimelineDefilementRight() {
@@ -347,7 +387,26 @@ public class ViewGame {
     private void updatePositionPlayer() {
 
         compteurPositonPlayer = boxBackground.translateXProperty().intValue();
-        compteurDefilement  = boxBackground.translateXProperty().intValue();
+        compteurDefilement = boxBackground.translateXProperty().intValue();
+        actuLife();
+
+        if (perduu == false){
+
+        if (stickMan.translateYProperty().getValue() > 200) {
+            stickMan.setLife(0);
+        }
+
+        if (stickMan.getLife() <= 0){
+            perduu= true;
+            stickMan.setLife(0);
+            Text perdu = new Text("GAME OVER");
+            perdu.setY(550);
+            perdu.setX(200);
+            perdu.setFont(new Font(200));
+            perdu.setFill(Color.WHITE);
+            root.getChildren().remove(stickMan);
+            root.getChildren().add(perdu);
+        }}
 
         if (valide == false) {
             //System.out.println("ok2");
@@ -386,6 +445,8 @@ public class ViewGame {
             stickMan.getAni().getTimelineJump().stop();
             stickMan.getAni().getTimelineJumpBackToGround().play();
 
+            drone1.contactAttack(stickMan);
+
 
             final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
             final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.2), new KeyValue(stickMan.opacityProperty(), 0));
@@ -404,12 +465,21 @@ public class ViewGame {
 
         }
 
+        if (rob1.translateXProperty().getValue() <= -795) {
+            rob1.setScaleX(-1);
+        }
+
+        if (rob1.translateXProperty().getValue() >= 595) {
+            rob1.setScaleX(1);
+        }
+
         if (stickManPane.intersects(
                 stickManPane.sceneToLocal(drone2.localToScene(
                         drone2.getBoundsInLocal())))) {
             stickMan.getAni().getTimelineJump().stop();
             stickMan.getAni().getTimelineJumpBackToGround().play();
 
+            drone1.contactAttack(stickMan);
 
             final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
             final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
@@ -419,8 +489,6 @@ public class ViewGame {
             timelineOpacity.setCycleCount(10);
             timelineOpacity.play();
         }
-
-
 
 
         if (stickMan.getLaserYeux() != null) {
@@ -473,18 +541,22 @@ public class ViewGame {
                 stickManPane.sceneToLocal(p11.localToScene(
                         p11.getBoundsInLocal()))) || stickManPane.intersects(
                 stickManPane.sceneToLocal(p12.localToScene(
-                        p12.getBoundsInLocal())))  ) {
-            tomber=true;
+                        p12.getBoundsInLocal()))) || stickManPane.intersects(
+                stickManPane.sceneToLocal(p14.localToScene(
+                        p14.getBoundsInLocal())))) {
+            tomber = true;
             //System.out.println(stickMan.getImage().getUrl());
 
         } else if ((!stickManPane.intersects(
                 stickManPane.sceneToLocal(p13.localToScene(
-                        p13.getBoundsInLocal()))) || stickMan.translateYProperty().getValue() >-200) &&!stickMan.getStatuStick().equals("jumpRight") && !stickMan.getStatuStick().equals("jumpLeft")
-                && !stickMan.getStatuStick().equals("jumpDownLeft") && !stickMan.getStatuStick().equals("jumpDownRight") && !stickMan.getStatuStick().equals("fatigue")){
+                        p13.getBoundsInLocal()))) || stickMan.translateYProperty().getValue() > -200) && !stickMan.getStatuStick().equals("jumpRight") && !stickMan.getStatuStick().equals("jumpLeft")
+                && !stickMan.getStatuStick().equals("jumpDownLeft") && !stickMan.getStatuStick().equals("jumpDownRight") && !stickMan.getStatuStick().equals("fatigue")) {
 
-            if (tomber == true && stickMan.translateYProperty().getValue() < 1 && jumpDowTop13 == false ){
-                tomber=false;
-           // stickMan.getAni().getTimelineJump().stop();
+            if (tomber == true && stickMan.translateYProperty().getValue() < 1 && jumpDowTop13 == false) {
+                tomber = false;
+                // stickMan.getAni().getTimelineJump().stop();
+
+
 
                 final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
                 final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
@@ -494,35 +566,87 @@ public class ViewGame {
                 timelineOpacity.setCycleCount(10);
                 timelineOpacity.play();
 
-            stickMan.getAni().animFall(stickManPane, stickMan);
-            }else if(tomber == true){
+                stickMan.getAni().animFall(stickManPane, stickMan);
+            } else if (tomber == true) {
                 stickMan.setStickManJumpDown();
             }
         }
 
         if ((compteurDefilement < -1440
-                && stickMan.translateYProperty().getValue() <-200 && compteurDefilement > -2140)) {
+                && stickMan.translateYProperty().getValue() < -200 && compteurDefilement > -2140)) {
             jumpDowTop13 = true;
-        //    if (jumpDowTop13 == false){
+            //    if (jumpDowTop13 == false){
 
-                //stickMan.getAni().getTimelineJumpBackToGround().stop();
+            //stickMan.getAni().getTimelineJumpBackToGround().stop();
 
-                int stickManPaneY = stickManPane.translateYProperty().intValue();
-                int stickManY = stickMan.translateYProperty().intValue();
+            int stickManPaneY = stickManPane.translateYProperty().intValue();
+            int stickManY = stickMan.translateYProperty().intValue();
 
-                //  stickManPane.setTranslateY(480);
-                //stickMan.setTranslateY(-230);
+            //  stickManPane.setTranslateY(480);
+            //stickMan.setTranslateY(-230);
 
-        }else if (jumpDowTop13 == true && !stickManPane.intersects(
+        } else if (jumpDowTop13 == true && !stickManPane.intersects(
                 stickManPane.sceneToLocal(p13.localToScene(
-                        p13.getBoundsInLocal())))){
-           // stickMan.getAni().getTimelineJumpBackToGround().play();
+                        p13.getBoundsInLocal())))) {
+            // stickMan.getAni().getTimelineJumpBackToGround().play();
             jumpDowTop13 = false;
         }
 
 
+        if (stickManPane.intersects(
+                stickManPane.sceneToLocal(rob1.localToScene(
+                        rob1.getBoundsInLocal())))) {
+
+            if (stickMan.getStatuStick().equals("beatRight") || stickMan.getStatuStick().equals("beatRunRight")) {
+
+                Image explo = new Image("assets/image/explosion/source.gif");
+
+                PauseTransition delayRemoveTir = new PauseTransition(Duration.seconds(3));
+                delayRemoveTir.setOnFinished(event -> {
+                    boxGroupPaysageEnemy.getChildren().remove(rob1);
+                });
+                delayRemoveTir.play();
+
+                rob1.setImage(explo);
+                rob1.setFitWidth(200);
+            } else {
+
+                stickMan.getAni().getTimelineJump().stop();
+                stickMan.getAni().getTimelineJumpBackToGround().play();
+
+                rob1.contactAttack(stickMan);
+
+
+                final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
+                final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
+
+                Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
+                timelineOpacity.setAutoReverse(true);
+                timelineOpacity.setCycleCount(10);
+                timelineOpacity.play();
+            }
         }
 
+
+        if (stickManPane.intersects(
+                stickManPane.sceneToLocal(eole1.localToScene(
+                        eole1.getBoundsInLocal())))) {
+            stickMan.getAni().getTimelineJump().stop();
+            stickMan.getAni().getTimelineJumpBackToGround().play();
+
+            eole1.contactAttack(stickMan);
+
+
+            final KeyFrame stickManOpacity = new KeyFrame(Duration.ZERO, new KeyValue(stickMan.opacityProperty(), 2));
+            final KeyFrame stickManOpacityEnd = new KeyFrame(Duration.seconds(0.1), new KeyValue(stickMan.opacityProperty(), 0));
+
+            Timeline timelineOpacity = new Timeline(stickManOpacity, stickManOpacityEnd);
+            timelineOpacity.setAutoReverse(true);
+            timelineOpacity.setCycleCount(10);
+            timelineOpacity.play();
+        }
+
+    }
 
 
     public int getCompteurDefilement() {

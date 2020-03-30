@@ -18,6 +18,7 @@ public class StickMan extends ImageView{
 
 
     private final Pane stickManPane;
+    public int life;
     private Anim ani = new Anim();
     private PauseTransition delaySetStickManFall = new PauseTransition();
     private ImageView laserYeux = null;
@@ -32,7 +33,7 @@ public class StickMan extends ImageView{
         this.setY(700);
 
         stickManPane = new Pane();
-        stickManPane.setBackground(new Background(new BackgroundFill(Color.AQUA, CornerRadii.EMPTY, Insets.EMPTY)));
+       // stickManPane.setBackground(new Background(new BackgroundFill(Color.AQUA, CornerRadii.EMPTY, Insets.EMPTY)));
         stickManPane.setMinWidth(10);
         stickManPane.setMinHeight(150);
         stickManPane.setMaxWidth(10);
@@ -42,12 +43,21 @@ public class StickMan extends ImageView{
         stickManPane.setTranslateY(700);
         stickManPane.setPickOnBounds(false);
         statuStick = "fatigue";
+        life = 100;
 
     }
 
     public StickMan(Pane stickManPane) {
 
         this.stickManPane = stickManPane;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
     }
 
     public Pane getStickManPane() {
