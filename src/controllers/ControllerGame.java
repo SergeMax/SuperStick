@@ -9,7 +9,6 @@ import views.ViewGame;
 import views.ViewHandler;
 
 public class ControllerGame implements EventHandler<KeyEvent> {
-    private final Party party;
     private ViewHandler viewHandler;
     private boolean rightpressed = false;
     private boolean leftpressed;
@@ -26,7 +25,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         this.viewHandler = viewHandler;
         this.viewHandler.setEventHandlerGame(this);
 
-        party = new Party();
 
         viewGame = viewHandler.getViewGame();
 
